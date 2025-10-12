@@ -1,8 +1,43 @@
+import { useState } from 'react'
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
+interface JournalData {
+  success: boolean
+  data?: any
+  error?: string
+  filePath?: string
+}
+
 function App(): React.JSX.Element {
+  const [journalData, setJournalData] = useState<JournalData | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+
+  async function handleSelectJournal() {
+    setIsLoading(true)
+    try {
+      const result = await window.electron.ipcRenderer.invoke('selectJournal')
+      setJournalData(result)
+      
+      if (result && result.success) {
+        console.log('Journal loaded successfully:', result.data)
+      } else if (result && !result.success) {
+        console.error('Error loading journal:', result.error)
+      } else {
+        console.log('User cancelled file selection')
+      }
+    } catch (error) {
+      console.error('Failed to select journal:', error)
+      setJournalData({
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <>
@@ -26,7 +61,30 @@ function App(): React.JSX.Element {
             Send IPC
           </a>
         </div>
+
+        <button onClick={handleSelectJournal} disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Select Journal'}
+        </button>
       </div>
+
+      {journalData && (
+        <div className="journal-status">
+          {journalData.success ? (
+            <div style={{ color: 'green' }}>
+              <p>✅ Journal loaded successfully!</p>
+              <p>File: {journalData.filePath}</p>
+              <p>Entries: {journalData.data?.entries?.length || 'Unknown'}</p>
+            </div>
+          ) : (
+            <div style={{ color: 'red' }}>
+              <p>❌ Error loading journal</p>
+              <p>Error: {journalData.error}</p>
+              {journalData.filePath && <p>File: {journalData.filePath}</p>}
+            </div>
+          )}
+        </div>
+      )}
+
       <Versions></Versions>
     </>
   )

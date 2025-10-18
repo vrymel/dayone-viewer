@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import electronLogo from "../assets/electron.svg";
-import Versions from "../components/Versions";
 
 function Home(): React.JSX.Element {
 	const [isLoading, setIsLoading] = useState(false);
 	const navigate = useNavigate();
-
-	const _ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
 
 	async function handleSelectJournal() {
 		setIsLoading(true);
@@ -37,28 +34,27 @@ function Home(): React.JSX.Element {
 	}
 
 	return (
-		<>
-			<img alt="logo" className="logo" src={electronLogo} />
-			<div className="creator">Powered by electron-vite</div>
-			<div className="text">
-				Build an Electron app with <span className="react">React</span>
-				&nbsp;and <span className="ts">TypeScript</span>
+		<div className="flex flex-col items-center justify-center space-y-6">
+			<img alt="logo" className="logo w-24 h-24" src={electronLogo} />
+			<div className="creator text-gray-600">Powered by electron-vite</div>
+			<div className="text text-center max-w-md">
+				Build an Electron app with <span className="react text-blue-600 font-semibold">React</span>
+				&nbsp;and <span className="ts text-green-600 font-semibold">TypeScript</span>
 			</div>
-			<p className="tip">
-				Please try pressing <code>F12</code> to open the devTool
+			<p className="tip text-sm text-gray-500 text-center">
+				Please try pressing <code className="bg-gray-200 px-2 py-1 rounded text-xs">F12</code> to open the devTool
 			</p>
 			<div className="actions">
 				<button
 					onClick={handleSelectJournal}
 					disabled={isLoading}
 					type="button"
+					className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg transition-colors duration-200"
 				>
 					{isLoading ? "Loading..." : "Select Journal"}
 				</button>
 			</div>
-
-			<Versions></Versions>
-		</>
+		</div>
 	);
 }
 

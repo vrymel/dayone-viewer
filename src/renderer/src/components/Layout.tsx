@@ -4,7 +4,7 @@ function Layout(): React.JSX.Element {
 	const location = useLocation();
 
 	return (
-		<div className="app-layout min-h-screen bg-gray-100">
+		<div className="">
 			{/* <nav className="app-navigation bg-white shadow-sm p-4">
 				<Link
 					to="/"
@@ -29,7 +29,7 @@ function Layout(): React.JSX.Element {
 					Journal
 				</Link>
 			</nav> */}
-			<main className="app-content p-6">
+			<main className="">
 				<Outlet />
 			</main>
 		</div>

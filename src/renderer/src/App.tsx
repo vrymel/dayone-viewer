@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Versions from './components/Versions'
+import JournalViewer from './components/JournalViewer'
 import electronLogo from './assets/electron.svg'
 
 interface JournalData {
@@ -9,9 +10,12 @@ interface JournalData {
   filePath?: string
 }
 
+type AppView = 'home' | 'journal'
+
 function App(): React.JSX.Element {
   const [journalData, setJournalData] = useState<JournalData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [currentView, setCurrentView] = useState<AppView>('home')
 
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
@@ -21,24 +25,39 @@ function App(): React.JSX.Element {
       const result = await window.electron.ipcRenderer.invoke('selectJournal')
       setJournalData(result)
       
-      if (result && result.success) {
+      if (result && result.journalPath) {
         console.log('Journal loaded successfully:', result.data)
-      } else if (result && !result.success) {
-        console.error('Error loading journal:', result.error)
-      } else {
-        console.log('User cancelled file selection')
-      }
+        setCurrentView('journal')
+      } 
+      // else if (result && !result.success) {
+      //   console.error('Error loading journal:', result.error)
+      //   setCurrentView('journal') // Show error page
+      // } else {
+      //   console.log('User cancelled file selection')
+      // }
     } catch (error) {
       console.error('Failed to select journal:', error)
       setJournalData({
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       })
+      setCurrentView('journal') // Show error page
     } finally {
       setIsLoading(false)
     }
   }
 
+  const handleBackToHome = () => {
+    setCurrentView('home')
+    setJournalData(null)
+  }
+
+  // Render journal viewer if we have data and are on journal view
+  if (currentView === 'journal' && journalData) {
+    return <JournalViewer journalData={journalData} onBack={handleBackToHome} />
+  }
+
+  // Render home view
   return (
     <>
       <img alt="logo" className="logo" src={electronLogo} />
@@ -66,24 +85,6 @@ function App(): React.JSX.Element {
           {isLoading ? 'Loading...' : 'Select Journal'}
         </button>
       </div>
-
-      {journalData && (
-        <div className="journal-status">
-          {journalData.success ? (
-            <div style={{ color: 'green' }}>
-              <p>✅ Journal loaded successfully!</p>
-              <p>File: {journalData.filePath}</p>
-              <p>Entries: {journalData.data?.entries?.length || 'Unknown'}</p>
-            </div>
-          ) : (
-            <div style={{ color: 'red' }}>
-              <p>❌ Error loading journal</p>
-              <p>Error: {journalData.error}</p>
-              {journalData.filePath && <p>File: {journalData.filePath}</p>}
-            </div>
-          )}
-        </div>
-      )}
 
       <Versions></Versions>
     </>

@@ -1,69 +1,40 @@
-import { useLocation, useNavigate } from 'react-router'
-import { useEffect } from 'react'
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { AppSidebar } from "@/components/app-sidebar"
+import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarInset,
+  SidebarProvider,
 } from "@/components/ui/sidebar"
-import {AppSidebar} from '@/components/app-sidebar';
- 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
 
-interface JournalData {
-  success: boolean
-  data?: any
-  error?: string
-  filePath?: string
-}
+import data from "./data.json"
 
-function Journal(): React.JSX.Element {
+export default function Page() {
   return (
-    <div>
-      <SidebarProvider>
-        <AppSidebar />
-        <main>
-          <SidebarTrigger />
-          <div>
-            <p className="text-red-700">children</p>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              <SectionCards />
+              <div className="px-4 lg:px-6">
+                <ChartAreaInteractive />
+              </div>
+              <DataTable data={data} />
+            </div>
           </div>
-        </main>
-      </SidebarProvider>
-    </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
-
-export default Journal

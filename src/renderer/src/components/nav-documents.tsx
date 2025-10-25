@@ -1,5 +1,6 @@
 "use client"
 
+import {useEffect,useState} from 'react';
 import {
   FolderIcon,
   MoreHorizontalIcon,
@@ -23,31 +24,44 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function NavDocuments({
-  items,
-}: {
-  items: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
-}) {
-  const { isMobile } = useSidebar()
+export function NavDocuments() {
+  const [journals, setJournals] = useState([]);
+  const items = [
+    {
+      name: 'My Journal',
+      url: '#',
+    },
+    {
+      name: 'Ice (3 years)',
+      url: '#',
+    }
+  ];
+  const { isMobile } = useSidebar();
+
+  useEffect(() => {
+    async function _() {
+      const results = await window.electron.ipcRenderer.invoke('journalList');
+
+      setJournals(results);
+    }
+
+    _();
+  }, []);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Documents</SidebarGroupLabel>
+      <SidebarGroupLabel>Journals</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {journals.map((journal) => (
+          <SidebarMenuItem key={journal.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
+              <a href={journal.url}>
+                {/*<journal.icon />*/}
+                <span>{journal.name}</span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+               {/*<DropdownMenuTrigger asChild>
                 <SidebarMenuAction
                   showOnHover
                   className="rounded-sm data-[state=open]:bg-accent"
@@ -55,7 +69,7 @@ export function NavDocuments({
                   <MoreHorizontalIcon />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
-              </DropdownMenuTrigger>
+              </DropdownMenuTrigger> */}
               <DropdownMenuContent
                 className="w-24 rounded-lg"
                 side={isMobile ? "bottom" : "right"}
@@ -73,12 +87,12 @@ export function NavDocuments({
             </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
+        {/*<SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <MoreHorizontalIcon className="text-sidebar-foreground/70" />
             <span>More</span>
           </SidebarMenuButton>
-        </SidebarMenuItem>
+        </SidebarMenuItem>*/}
       </SidebarMenu>
     </SidebarGroup>
   )

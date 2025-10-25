@@ -1,39 +1,48 @@
 import { Link, Outlet, useLocation } from "react-router";
 
-function Layout(): React.JSX.Element {
-	const location = useLocation();
 
-	return (
-		<div className="">
-			{/* <nav className="app-navigation bg-white shadow-sm p-4">
-				<Link
-					to="/"
-					className={location.pathname === "/" ? "nav-link active text-blue-600 font-semibold" : "nav-link text-gray-600 hover:text-blue-500"}
-				>
-					Home
-				</Link>
-				<Link
-					to="/about"
-					className={
-						location.pathname === "/about" ? "nav-link active text-blue-600 font-semibold" : "nav-link text-gray-600 hover:text-blue-500"
-					}
-				>
-					About
-				</Link>
-				<Link
-					to="/journal"
-					className={
-						location.pathname === "/journal" ? "nav-link active text-blue-600 font-semibold" : "nav-link text-gray-600 hover:text-blue-500"
-					}
-				>
-					Journal
-				</Link>
-			</nav> */}
-			<main className="">
+import { AppSidebar } from "@/components/app-sidebar"
+import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
+
+import data from "./data.json"
+
+function Layout(): React.JSX.Element {
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              {/*<SectionCards />*/}
+              {/*<div className="px-4 lg:px-6">
+                <ChartAreaInteractive />
+              </div>*/}
+              {/*<DataTable data={data} />*/}
+              <main className="">
 				<Outlet />
-			</main>
-		</div>
-	);
+			  </main>
+            </div>
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }
 
 export default Layout;

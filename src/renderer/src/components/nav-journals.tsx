@@ -24,7 +24,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function NavDocuments() {
+export function NavJournals() {
   const [journals, setJournals] = useState([]);
   const items = [
     {

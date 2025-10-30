@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { PhotoDisplay } from "@/components/PhotoDisplay";
 import type { JournalEntry } from "@/types/journal";
 
 type JournalEntryViewProps = {
@@ -18,7 +19,7 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 	const photosMap = useMemo(() => {
 		const mp = {};
 
-		entry.photos.forEach((p) => {
+		entry?.photos?.forEach((p) => {
 			mp[p.identifier] = p;
 		});
 
@@ -37,9 +38,10 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 						const photo = photosMap[ob.identifier];
 
 						return (
-							<p key={ob.identifier} className="text-red-500">
-								{photo.md5}
-							</p>
+							<PhotoDisplay
+								key={ob.identifier}
+								filename={`${photo.md5}.jpeg`}
+							/>
 						);
 					});
 				}

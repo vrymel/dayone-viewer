@@ -9,7 +9,7 @@ export function setupJournalHandlers(mainWindow: BrowserWindow) {
 		try {
 			// Read all items in the base directory
 			const items = readdirSync(basePath);
-			const journalList: Array<{ name: string; data: any }> = [];
+			const journalList: Array<{ name: string; path: string; data: any }> = [];
 
 			for (const item of items) {
 				const itemPath = join(basePath, item);
@@ -34,6 +34,7 @@ export function setupJournalHandlers(mainWindow: BrowserWindow) {
 									// Add to the journal list with name (filename) and data
 									journalList.push({
 										name: basename(file, ".json"), // filename without extension
+										path: itemPath,
 										data: jsonData,
 									});
 								} catch (parseError) {

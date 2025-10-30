@@ -10,9 +10,6 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 	const data = useMemo(() => {
 		const richTextContent: RichText = JSON.parse(entry.richText);
 
-		console.log(richTextContent);
-		console.log(entry.photos);
-
 		return richTextContent;
 	}, [entry]);
 
@@ -35,14 +32,10 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 
 				if (content.embeddedObjects) {
 					return content.embeddedObjects.map((ob) => {
+						// ob.type = video, photo
 						const photo = photosMap[ob.identifier];
 
-						return (
-							<PhotoDisplay
-								key={ob.identifier}
-								filename={`${photo.md5}.jpeg`}
-							/>
-						);
+						return <PhotoDisplay key={ob.identifier} photo={photo} />;
 					});
 				}
 

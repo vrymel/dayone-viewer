@@ -1,3 +1,20 @@
+export type Photo = {
+	fileSize: number;
+	orderInEntry: number;
+	creationDevice: string;
+	duration: number;
+	favorite: boolean;
+	type: string;
+	filename: string;
+	identifier: string;
+	date: string;
+	exposureBiasValue: number;
+	height: number;
+	width: number;
+	md5: string;
+	isSketch: boolean;
+};
+
 export type JournalEntry = {
 	uuid: string;
 	text: string;
@@ -23,22 +40,7 @@ export type JournalEntry = {
 		placeName: string;
 		latitude: number;
 	};
-	photos?: Array<{
-		fileSize: number;
-		orderInEntry: number;
-		creationDevice: string;
-		duration: number;
-		favorite: boolean;
-		type: string;
-		filename: string;
-		identifier: string;
-		date: string;
-		exposureBiasValue: number;
-		height: number;
-		width: number;
-		md5: string;
-		isSketch: boolean;
-	}>;
+	photos?: Photo[];
 	// Additional fields from App.tsx
 	duration?: number;
 	richText?: string;
@@ -82,6 +84,7 @@ export type JournalFile = {
 
 export type Journal = {
 	name: string;
+	path: string;
 	data: JournalFile;
 };
 

@@ -50,19 +50,42 @@ export type JournalEntry = {
 	creationOSVersion?: string;
 	isPinned?: boolean;
 	isAllDay?: boolean;
-}
+};
+
+export type RichTextContentEmbeddedObjects = {
+	identifier: string;
+	type: string;
+};
+
+export type RichTextContent = {
+	// attributes?: {};
+	text?: string;
+	embeddedObjects?: RichTextContentEmbeddedObjects[];
+};
+
+export type RichText = {
+	contents: RichTextContent[];
+	meta: {
+		created: {
+			platform: string;
+			version: number;
+		};
+		"small-lines-removed": bool;
+		version: number;
+	};
+};
 
 export type JournalFile = {
 	metadata: { version: string };
 	entries: JournalEntry[];
-}
+};
 
 export type Journal = {
 	name: string;
 	data: JournalFile;
-}
+};
 
 export type JournalContextType = {
 	activeJournal?: Journal | null;
 	setActiveJournal?: (journal: Journal | null) => void;
-}
+};

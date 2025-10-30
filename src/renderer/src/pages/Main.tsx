@@ -1,4 +1,6 @@
 import { useContext, useState } from "react";
+import JournalEntryView from "@/components/journal-entry-view";
+import { textContentTitle } from "@/lib/dayone-parsers";
 import {
 	Table,
 	TableBody,
@@ -11,11 +13,10 @@ import JournalContext from "../contexts/journal";
 import type { JournalEntry } from "../types/journal";
 
 export default function Main() {
-	const _journalCtx = useContext(JournalContext);
+	const { activeJournal } = useContext(JournalContext);
 	const [selectedEntry, setSelectedEntry] = useState<JournalEntry | null>(null);
 
-	const entries: JournalEntry[] =
-		_journalCtx?.activeJournal?.data?.entries ?? [];
+	const entries: JournalEntry[] = activeJournal?.data?.entries ?? [];
 
 	const truncateText = (text: string | undefined, maxLength: number = 100) => {
 		if (!text) return "No content";
@@ -65,7 +66,9 @@ export default function Main() {
 									<TableCell className="font-medium">
 										{formatDate(entry.creationDate)}
 									</TableCell>
-									<TableCell>{truncateText(entry.text)}</TableCell>
+									<TableCell>
+										{truncateText(textContentTitle(entry.richText))}
+									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
@@ -75,7 +78,7 @@ export default function Main() {
 
 			{/* Second Column - Selected Entry View */}
 			<div className="w-1/2 bg-gray">
-				{/* Reserved for selected item - currently black */}
+				{selectedEntry ? <JournalEntryView entry={selectedEntry} /> : null}
 			</div>
 		</div>
 	);

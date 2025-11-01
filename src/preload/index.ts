@@ -5,6 +5,8 @@ import { contextBridge, ipcRenderer } from "electron";
 const api = {
 	getPhoto: (baseLocation: string, filename: string): Promise<string | null> =>
 		ipcRenderer.invoke("get-photo", baseLocation, filename),
+	getVideo: (baseLocation: string, filename: string): Promise<string | null> =>
+		ipcRenderer.invoke("get-video", baseLocation, filename),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

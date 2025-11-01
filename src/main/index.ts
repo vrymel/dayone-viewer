@@ -3,6 +3,7 @@ import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
 import icon from "../../resources/icon.png?asset";
 import { setupPhotoHandlers } from "./get-photo";
+import { setupVideoHandlers } from "./get-video";
 import { setupJournalHandlers } from "./select-journal";
 
 function createWindow(): void {
@@ -39,6 +40,7 @@ function createWindow(): void {
 	// Setup IPC handlers with mainWindow reference
 	setupJournalHandlers(mainWindow);
 	setupPhotoHandlers();
+	setupVideoHandlers();
 }
 
 // This method will be called when Electron has finished

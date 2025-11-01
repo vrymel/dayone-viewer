@@ -53,7 +53,7 @@ export function PhotoDisplay({ photo }: PhotoDisplayProps) {
 	useEffect(() => {
 		const filename = `${photo.md5}.${photo.type}`;
 		loadPhoto(activeJournal.path, filename);
-	}, [activeJournal, photo, loadPhoto]);
+	}, [activeJournal, photo]);
 
 	return (
 		<div className="space-y-4">

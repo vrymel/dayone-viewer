@@ -15,6 +15,21 @@ export type Photo = {
 	isSketch: boolean;
 };
 
+export type Video = {
+	fileSize: number;
+	orderInEntry: number;
+	creationDevice: string;
+	duration: number;
+	favorite: boolean;
+	type: string;
+	filename: string;
+	identifier: string;
+	date: string;
+	height: number;
+	width: number;
+	md5: string;
+};
+
 export type JournalEntry = {
 	uuid: string;
 	text: string;
@@ -41,6 +56,7 @@ export type JournalEntry = {
 		latitude: number;
 	};
 	photos?: Photo[];
+	videos?: Video[];
 	// Additional fields from App.tsx
 	duration?: number;
 	richText?: string;
@@ -72,7 +88,7 @@ export type RichText = {
 			platform: string;
 			version: number;
 		};
-		"small-lines-removed": bool;
+		"small-lines-removed": boolean;
 		version: number;
 	};
 };

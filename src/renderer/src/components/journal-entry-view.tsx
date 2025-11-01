@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { PhotoDisplay } from "@/components/PhotoDisplay";
-import type { JournalEntry } from "@/types/journal";
+import { VideoDisplay } from "@/components/VideoDisplay";
+import type { JournalEntry, RichText } from "@/types/journal";
 
 type JournalEntryViewProps = {
 	entry: JournalEntry;
@@ -23,6 +24,16 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 		return mp;
 	}, [entry]);
 
+	const videosMap = useMemo(() => {
+		const mp = {};
+
+		entry?.videos?.forEach((p) => {
+			mp[p.identifier] = p;
+		});
+
+		return mp;
+	}, [entry]);
+
 	return (
 		<div>
 			{data.contents.map((content) => {
@@ -32,10 +43,19 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 
 				if (content.embeddedObjects) {
 					return content.embeddedObjects.map((ob) => {
-						// ob.type = video, photo
-						const photo = photosMap[ob.identifier];
+						if (ob.type === 'photo') {
+							const photo = photosMap[ob.identifier];
 
-						return <PhotoDisplay key={ob.identifier} photo={photo} />;
+							return <PhotoDisplay key={ob.identifier} photo={photo} />;
+						}
+
+						if (ob.type === 'video') {
+							const video = videosMap[ob.identifier];
+
+							return <VideoDisplay key={ob.identifier} video={video} />;
+						}
+
+						return null;
 					});
 				}
 

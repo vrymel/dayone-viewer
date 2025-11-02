@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, protocol, shell } from "electron";
 import icon from "../../resources/icon.png?asset";
 import { setupPhotoHandlers } from "./get-photo";
 import { setupVideoHandlers } from "./get-video";
@@ -49,6 +49,12 @@ function createWindow(): void {
 app.whenReady().then(() => {
 	// Set app user model id for windows
 	electronApp.setAppUserModelId("com.electron");
+
+	// Register media protocol for video files
+	protocol.registerFileProtocol("media", (request, callback) => {
+		const url = request.url.substring(8); // Remove 'media://' prefix
+		callback({ path: url });
+	});
 
 	// Default open or close DevTools by F12 in development
 	// and ignore CommandOrControl + R in production.

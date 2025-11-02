@@ -77,14 +77,14 @@ export default function VideoEmbed({ video }: VideoDisplayProps) {
 
 			{videoUrl && !loading && (
 				<div className="border rounded-lg overflow-hidden">
+					<p>{videoUrl}</p>
 					<video
 						src={videoUrl}
 						controls
 						className="max-w-full h-auto"
 						width={video.width}
 						height={video.height}
-						onError={() => setError("Failed to display video")}
-						preload="metadata"
+						type="video/mp4"
 					>
 						<track kind="captions" />
 						Your browser does not support the video tag.

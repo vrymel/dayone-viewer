@@ -62,7 +62,7 @@ export default function VideoEmbed({ video }: VideoDisplayProps) {
 	}, [activeJournal, video, loadVideo]);
 
 	return (
-		<div className="space-y-4">
+		<div className="">
 			{loading && (
 				<div className="p-3 text-blue-600 bg-blue-50 border border-blue-200 rounded">
 					Loading video...
@@ -76,22 +76,17 @@ export default function VideoEmbed({ video }: VideoDisplayProps) {
 			)}
 
 			{videoUrl && !loading && (
-				<div className="border rounded-lg overflow-hidden">
+				<div className="">
 					<video
 						src={videoUrl}
 						controls
-						className="max-w-full h-auto"
+						className=""
 						width={video.width}
 						height={video.height}
 					>
 						<track kind="captions" />
 						Your browser does not support the video tag.
 					</video>
-					{video.duration > 0 && (
-						<div className="p-2 bg-gray-50 text-sm text-gray-600">
-							Duration: {Math.round(video.duration)}s
-						</div>
-					)}
 				</div>
 			)}
 		</div>

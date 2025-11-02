@@ -35,9 +35,11 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 	}, [entry]);
 
 	return (
-		<div>
-			{data.contents.map((content) => {
-				if (content.text) {
+		<article className="prose prose-zinc prose-img:rounded-xl prose-video:rounded-xl">
+			{data.contents.map((content, index) => {
+				if (content.text && index === 0) {
+					return <h1 key={content.text}>{content.text}</h1>;
+				} else if (content.text) {
 					return <p key={content.text}>{content.text}</p>;
 				}
 
@@ -61,6 +63,6 @@ export default function JournalEntryView({ entry }: JournalEntryViewProps) {
 
 				return null;
 			})}
-		</div>
+		</article>
 	);
 }

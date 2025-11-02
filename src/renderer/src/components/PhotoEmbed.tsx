@@ -51,12 +51,12 @@ export default function PhotoEmbed({ photo }: PhotoDisplayProps) {
 
 	useEffect(() => {
 		const filename = `${photo.md5}.${photo.type}`;
-		
+
 		loadPhoto(activeJournal.path, filename);
 	}, [activeJournal, photo, loadPhoto]);
 
 	return (
-		<div className="space-y-4">
+		<div className="">
 			{loading && (
 				<div className="p-3 text-blue-600 bg-blue-50 border border-blue-200 rounded">
 					Loading photo...
@@ -70,7 +70,7 @@ export default function PhotoEmbed({ photo }: PhotoDisplayProps) {
 			)}
 
 			{photoUrl && !loading && (
-				<div className="border rounded-lg overflow-hidden">
+				<div className="">
 					<img
 						src={photoUrl}
 						alt={photo.md5}

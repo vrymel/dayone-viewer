@@ -78,7 +78,9 @@ export default function Main() {
 
 			{/* Second Column - Selected Entry View */}
 			<div className="w-1/2 bg-gray">
-				{selectedEntry ? <JournalEntryView entry={selectedEntry} /> : null}
+				<div className="flex justify-center overflow-y-scroll">
+					{selectedEntry ? <JournalEntryView entry={selectedEntry} /> : null}
+				</div>
 			</div>
 		</div>
 	);

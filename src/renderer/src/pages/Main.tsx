@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import JournalEntryView from "@/components/journal-entry-view";
+import JournalEntryView from "@/components/JournalEntryView";
 import { textContentTitle } from "@/lib/dayone-parsers";
 import {
 	Table,

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import JournalContext from "@/contexts/journal";
 import type { Photo } from "@/types/journal";
 
@@ -6,54 +6,54 @@ type PhotoDisplayProps = {
 	photo: Photo;
 };
 
-export function PhotoDisplay({ photo }: PhotoDisplayProps) {
+export default function PhotoEmbed({ photo }: PhotoDisplayProps) {
 	const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const { activeJournal } = useContext(JournalContext);
 
-	const loadPhoto = async (
-		imageLocation: string,
-		imageFilename: string,
-	): Promise<void> => {
-		if (!imageFilename.trim()) {
-			setError("No filename provided");
-			setPhotoUrl(null);
-			return;
-		}
+	const loadPhoto = useCallback(
+		async (imageLocation: string, imageFilename: string): Promise<void> => {
+			if (!imageFilename.trim()) {
+				setError("No filename provided");
+				setPhotoUrl(null);
+				return;
+			}
 
-		setLoading(true);
-		setError(null);
+			setLoading(true);
+			setError(null);
 
-		try {
-			const result = await window.api.getPhoto(
-				imageLocation,
-				imageFilename.trim(),
-			);
+			try {
+				const result = await window.api.getPhoto(
+					imageLocation,
+					imageFilename.trim(),
+				);
 
-			if (result) {
-				setPhotoUrl(result);
-			} else {
+				if (result) {
+					setPhotoUrl(result);
+				} else {
+					setError(
+						"Failed to load photo. Check if the file exists and is a valid image.",
+					);
+					setPhotoUrl(null);
+				}
+			} catch (err) {
 				setError(
-					"Failed to load photo. Check if the file exists and is a valid image.",
+					`Error loading photo: ${err instanceof Error ? err.message : "Unknown error"}`,
 				);
 				setPhotoUrl(null);
+			} finally {
+				setLoading(false);
 			}
-		} catch (err) {
-			setError(
-				`Error loading photo: ${err instanceof Error ? err.message : "Unknown error"}`,
-			);
-			setPhotoUrl(null);
-		} finally {
-			setLoading(false);
-		}
-	};
+		},
+		[],
+	);
 
-	// Load photo when filename prop changes
 	useEffect(() => {
 		const filename = `${photo.md5}.${photo.type}`;
+		
 		loadPhoto(activeJournal.path, filename);
-	}, [activeJournal, photo]);
+	}, [activeJournal, photo, loadPhoto]);
 
 	return (
 		<div className="space-y-4">

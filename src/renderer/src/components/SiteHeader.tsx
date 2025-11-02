@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import JournalContext from "@/contexts/journal";
 
-export function SiteHeader() {
+export default function SiteHeader() {
 	const { activeJournal } = useContext(JournalContext);
 
 	return (

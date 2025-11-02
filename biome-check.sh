@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Default extra args for biome
 extra_args=""
+staged_only=false
 
 # Parse args
 for arg in "$@"; do
@@ -11,11 +12,21 @@ for arg in "$@"; do
       extra_args="--unsafe"
       shift
       ;;
+    --staged)
+      staged_only=true
+      shift
+      ;;
   esac
 done
 
-# Get both staged and unstaged changed files
-changed_files=$(git diff --name-only HEAD && git diff --cached --name-only)
+# Get changed files based on staged option
+if [ "$staged_only" = true ]; then
+  # Get only staged files
+  changed_files=$(git diff --cached --name-only)
+else
+  # Get both staged and unstaged changed files
+  changed_files=$(git diff --name-only HEAD && git diff --cached --name-only)
+fi
 
 # Remove duplicates
 changed_files=$(echo "$changed_files" | sort -u)

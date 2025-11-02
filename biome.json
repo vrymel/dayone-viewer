@@ -1,0 +1,25 @@
+{
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    // "ignore": [],
+    "attributePosition": "auto",
+    "indentStyle": "spaces",
+    "indentWidth": 4,
+    "lineWidth": 80,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "indentStyle": "space",
+      "indentWidth": 4,
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  }
+}

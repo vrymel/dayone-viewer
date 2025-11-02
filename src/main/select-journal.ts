@@ -53,8 +53,6 @@ export function setupJournalHandlers(mainWindow: BrowserWindow) {
 				}
 			}
 
-			console.log({ foo: journalList[0].data });
-
 			return journalList;
 		} catch (error) {
 			console.error("Error reading journals directory:", error);

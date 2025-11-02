@@ -83,8 +83,6 @@ export default function VideoEmbed({ video }: VideoDisplayProps) {
 						className="max-w-full h-auto"
 						width={video.width}
 						height={video.height}
-						onError={() => setError("Failed to display video")}
-						preload="metadata"
 					>
 						<track kind="captions" />
 						Your browser does not support the video tag.
